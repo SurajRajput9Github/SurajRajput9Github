@@ -20,7 +20,8 @@ A = '\x1b[1;97m'; R = '\x1b[38;5;196m'; G = '\x1b[38;5;46m'; B = '\x1b[38;5;45m'
 # --- 1. AUTO UPDATE SYSTEM ---
 def auto_update():
     # यहाँ अपनी GitHub Raw फाइल का लिंक डालें जहाँ आप नया कोड रखेंगे
-    github_link = "https://githubusercontent.com"
+    github_link = "https://raw.githubusercontent.com/SurajRajput9Github/SurajRajput9Github/refs/heads/main/SURAJ_CLONER"
+"
     try:
         current_code = open(__file__, 'r').read()
         latest_code = requests.get(github_link).text
