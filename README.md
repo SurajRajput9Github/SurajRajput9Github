@@ -1,25 +1,29 @@
-# SURAJ ALL-IN-ONE TOOL
+# SURAJ ALL-IN-ONE TOOL 🚀
 
-यह एक शक्तिशाली Termux टूल है जो फ़ाइल बनाने (Dumping) और फ़ाइल क्लोनिंग (Cloning) के काम आता है।
+एक शक्तिशाली और आसान Python टूल जो आपके कामों को आसान बनाता है। यह टूल खास तौर पर Termux और Linux यूजर्स के लिए बनाया गया है।
 
-### इंस्टॉल करने का तरीका (Setup):
-Termux में ये कमांड्स एक-एक करके चलाएं:
+## ✨ मुख्य विशेषताएं (Features)
+- सरल इंटरफ़ेस (Easy to use)
+- फास्ट और सुरक्षित (Fast & Secure)
+- ओपन सोर्स (Open Source)
+
+## 📥 इंस्टालेशन और सेटअप (Installation)
+
+टूल चलाने के लिए नीचे दी गई कमांड्स को अपने Termux में एक-एक करके डालें:
 
 ```bash
-pkg update && pkg upgrade
+pkg update && pkg upgrade -y
 pkg install python git -y
+pip install requests rich
 git clone https://github.com
-cd Suraj-9
+cd SurajRajput9Github
+python Suraj.py
 ```
 
-### टूल चलाने का तरीका (Run):
-```bash
-python run4.py
-```
+## 📜 लाइसेंस
+यह टूल [GPL-3.0 license](LICENSE) के अंतर्गत उपलब्ध है।
 
-### मुख्य फीचर्स:
-*   **File Make:** फेसबुक फ्रेंड लिस्ट से IDs निकालना।
-*   **File Clone:** बनी हुई फाइल से IDs क्लोन करना।
-*   **Auto Password:** नाम के आधार पर ऑटोमैटिक पासवर्ड जनरेशन।
-
-*   
+## 👤 डेवलपर
+- **नाम:** Suraj Rajput
+- **Github:** [SurajRajput9Github](https://github.com)
+- 
